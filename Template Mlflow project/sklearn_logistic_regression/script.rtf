@@ -1,0 +1,97 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1671\cocoasubrtf500
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset0 Menlo-Regular;\f2\fnil\fcharset0 Menlo-Bold;
+\f3\fnil\fcharset0 Menlo-Italic;\f4\froman\fcharset0 Times-Roman;\f5\fnil\fcharset0 Monaco;
+}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red0\green0\blue233;\red0\green0\blue0;
+\red0\green0\blue233;\red245\green245\blue245;}
+{\*\expandedcolortbl;;\csgray\c0;\cssrgb\c0\c0\c93333;\cssrgb\c0\c0\c0;
+\cssrgb\c0\c0\c93333;\cssrgb\c96863\c96863\c96863;}
+\margl1440\margr1440\vieww21500\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 1- run the MLflow training              \'97\'97\'97\'97\'97\'97>(MLproject and condo.yml )\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\f1\fs22 \cf2 \CocoaLigature0  $ mlflow run sklearn_logistic_regression/\
+\
+2-serve the model \
+   A- via 
+\f2\b \cf2 MLflow
+\f1\b0 \cf2 : \
+    
+\f3\i \cf2 \ul \ulc2 In the example folder:
+\f1\i0 \cf2 \ulnone \
+     -$ mlflow models serve -m runs:/3905c57d63d847cc8d8a796f315ea7de/model --port 5002\
+     -$ curl -d '\{"columns":["x"], "data":[[1], [--H 'Content-Type: application/json; format=pandas-split' -X POST localhost:5002/invocations\
+   B- via 
+\f2\b \cf2 flask
+\f1\b0 \cf2 \
+     -$ python predict.py   \
+     - {\field{\*\fldinst{HYPERLINK "http://localhost:5001/models/predict?x=0"}}{\fldrslt 
+\f4\fs24 \cf3 \expnd0\expndtw0\kerning0
+\ul \ulc3 \CocoaLigature1 http://localhost:5001/models/predict?x=0}}
+\f4\fs24 \cf3 \expnd0\expndtw0\kerning0
+\ul \ulc3 \CocoaLigature1 \
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+\cf4 \ulnone 3- package the model.                    
+\f0 \cf0 \kerning1\expnd0\expndtw0 \'97\'97\'97\'97\'97\'97>(docker file)
+\f4 \cf4 \expnd0\expndtw0\kerning0
+\
+           -  in the same folder where you have the docker file\
+           -  $ 
+\f1\fs22 \cf2 \kerning1\expnd0\expndtw0 \CocoaLigature0 docker build -t imagename .\
+\
+4-run the docker image\
+      -verify the image is created \
+           -$ docker images\
+       -run the image\
+           -$ docker run -p 5001:5001  imagename:tagname\
+       - push the image\
+          (Optional) -$ docker tag oldename reponame/oldname\
+           -$ docker push reponame/imagename:tagname\
+       - deploy the image \
+\
+
+\f4\fs24 \cf3 \expnd0\expndtw0\kerning0
+\ul \ulc3 \CocoaLigature1 \
+\
+\
+\pard\pardeftab720\sl280\partightenfactor0
+\cf5 \ulc5 \outl0\strokewidth0 \strokec5 \
+\pard\pardeftab720\sl280\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://docs.docker.com/config/daemon/systemd/"}}{\fldrslt \cf5 \ulc5 https://docs.docker.com/config/daemon/systemd/}}\
+\pard\pardeftab720\sl280\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://docs.docker.com/install/linux/docker-ce/centos/"}}{\fldrslt \cf5 \ulc5 https://docs.docker.com/install/linux/docker-ce/centos/}}\
+\pard\pardeftab720\sl280\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://www.techrepublic.com/article/how-to-install-a-kubernetes-cluster-on-centos-7/"}}{\fldrslt \cf5 \ulc5 https://www.techrepublic.com/article/how-to-install-a-kubernetes-cluster-on-centos-7/}}\
+\pard\pardeftab720\sl280\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://phoenixnap.com/kb/how-to-install-kubernetes-on-centos"}}{\fldrslt \cf5 \ulc5 https://phoenixnap.com/kb/how-to-install-kubernetes-on-centos}}\
+sudo kubeadm init --pod-network-cidr=10.244.0.0/16 --apiserver-advertise-address=172.31.95.16 --ignore-preflight-errors=NumCPU\
+\
+\pard\pardeftab720\sl280\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://coreos.com/tectonic/docs/latest/tutorials/sandbox/deleting-deployment.html"}}{\fldrslt \cf3 \ulc3 \outl0\strokewidth0 https://coreos.com/tectonic/docs/latest/tutorials/sandbox/deleting-deployment.html}}\cf3 \ulc3 \outl0\strokewidth0 .\cf5 \ulc5 \outl0\strokewidth0 \strokec5 \
+\pard\pardeftab720\sl280\partightenfactor0
+\cf3 \ulc3 \outl0\strokewidth0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+\cf3 \
+\
+\pard\pardeftab720\sl620\partightenfactor0
+
+\f5\fs36 \cf4 \cb6 \ulnone cat <<EOF > /etc/yum.repos.d/kubernetes.repo\
+[kubernetes]\
+name=Kubernetes\
+baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64\
+enabled=1\
+gpgcheck=1\
+repo_gpgcheck=1\
+gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg\
+EOF\
+\
+cat  <<EOF > /etc/sysctl.d/master_node_name\
+net.bridge.bridge-nf-call-ip6tables = 1\
+net.bridge.bridge-nf-call-iptables = 1\
+EOF\
+sysctl --system\
+\
+}
