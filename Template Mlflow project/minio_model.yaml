@@ -1,0 +1,39 @@
+---
+apiVersion: machinelearning.seldon.io/v1
+kind: SeldonDeployment
+metadata:
+  name: mlflow
+spec:
+  name: wines
+  predictors:
+  - componentSpecs:
+    - spec:
+        containers:
+        - image: seldonio/mlflowserver_rest:0.3
+          name: classifier
+          readinessProbe:
+            failureThreshold: 3
+            #overwrite the inital delay for readiness checks, not enough time 
+            #is allowed for the conda stack to complete installation
+            initialDelaySeconds: 120
+            periodSeconds: 5
+            successThreshold: 1
+            tcpSocket:
+              port: http
+            timeoutSeconds: 1
+          livenessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 120
+            periodSeconds: 5
+            successThreshold: 1
+            tcpSocket:
+              port: http
+            timeoutSeconds: 1
+    graph:
+      implementation: MLFLOW_SERVER
+      modelUri: s3://test/elasticnet_wine
+      envSecretRefName: seldon-init-container-secret
+      name: classifier
+      type: MODEL
+    name: default
+    replicas: 1
